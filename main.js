@@ -25,16 +25,9 @@ const apiRoot = 'https://api.github.com';
 
 // Check the user set up the .env file and their request correctly. If not, stop the program.
 var auth_token = getAuthToken();
-if(!getAuthToken)
-  return false;
-
 var requestOptions = getRequestOptions(auth_token);
-if(!requestOptions)
-  return false;
-
 
 getContribs.validate(requestOptions);
-
 getContribs.getContributorsAvatars(requestOptions)
 
 console.log("Done.")
@@ -47,7 +40,8 @@ if(process.env.AUTH_TOKEN){
   } else {
   console.log("ERROR: Invalid environment. Please supply a .env file with the line AUTH_TOKEN='your token'.");
   console.log("To get a token, please go to https://github.com/settings/tokens and click 'generate new token'.");
-  return false;
+  process.exit(0);
+
   }
 }
 
@@ -56,7 +50,7 @@ function getRequestOptions(auth_token) {
   if(!process.argv[2] || !process.argv[3]){
     console.log("ERROR: Incorrect arguments.  This program expects:\
     \n\tnode main.js REPO_OWNER REPO_NAME");
-    return false;
+    process.exit(0);
   } else {
     userName = process.argv[2];
     repoName = process.argv[3];
