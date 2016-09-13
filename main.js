@@ -30,7 +30,8 @@ var requestOptions = getRequestOptions(auth_token);
 // Test the HTTP connection
 getContribs.validate(requestOptions);
 
-getContribs.getContributorsAvatars(requestOptions);
+// Callback function used for printing asynchronously
+getContribs.getContributorsAvatars(requestOptions, function (str) { console.log(str) });
 
 // ------------------------ FUNCTIONS ------------------------ //
 

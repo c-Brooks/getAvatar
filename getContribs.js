@@ -35,6 +35,7 @@ module.exports =
         request.get(body[i].avatar_url).pipe(fs.createWriteStream('./avatars/' + body[i].login + '.png'));
         console.log('\tGot avatar from ' + body[i].login);
         }
+        cb("Done!");
       });
     });
   },
