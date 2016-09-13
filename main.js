@@ -23,14 +23,14 @@ const apiRoot = 'https://api.github.com';
 
 // ------------------------ MAIN CODE ------------------------ //
 
-// Check the user set up the .env file and their request correctly. If not, stop the program.
+// Check the user set up the .env file and their request correctly.
 var auth_token = getAuthToken();
 var requestOptions = getRequestOptions(auth_token);
 
+// Test the HTTP connection
 getContribs.validate(requestOptions);
-getContribs.getContributorsAvatars(requestOptions)
 
-console.log("Done.")
+getContribs.getContributorsAvatars(requestOptions);
 
 // ------------------------ FUNCTIONS ------------------------ //
 
@@ -39,17 +39,18 @@ if(process.env.AUTH_TOKEN){
   return process.env.AUTH_TOKEN;
   } else {
   console.log("ERROR: Invalid environment. Please supply a .env file with the line AUTH_TOKEN='your token'.");
-  console.log("To get a token, please go to https://github.com/settings/tokens and click 'generate new token'.");
+  console.log("To get a token, go to https://github.com/settings/tokens and click 'generate new token'.");
   process.exit(0);
-
   }
 }
 
+// RequestOptions is an object used by the request module to communicate through HTTP
 function getRequestOptions(auth_token) {
+  var userName, repoName;
   // If fields are missing, quit the program
   if(!process.argv[2] || !process.argv[3]){
     console.log("ERROR: Incorrect arguments.  This program expects:\
-    \n\tnode main.js REPO_OWNER REPO_NAME");
+            \n\tnode main.js REPO_OWNER REPO_NAME");
     process.exit(0);
   } else {
     userName = process.argv[2];

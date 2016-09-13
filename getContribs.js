@@ -10,33 +10,32 @@ module.exports =
 {
 // If there are no errors in accessing api, return true
 
-  validate: function(requestOptions){
+  validate: function (requestOptions) {
     request.get(requestOptions, function (err, response, body) {
       if(err) {  console.log(err); return false; }
 
-      if(body.message == 'Not Found'){
+      if(body.message == 'Not Found') {
         console.log("ERROR: Could not find repo on GitHub\
         \nPlease double-check your repository's details."); process.exit(1);
       }
     });
   },
 
-  getContributorsAvatars: function(options, cb) {
-   console.log("Extracting from " + options.url)
-   request.get(options, function(err, response, body){
-      if(err) { return false; }
+  getContributorsAvatars: function (options, cb) {
+   request.get(options, function (err, response, body) {
+    if(err) { return false; }
       // If folder named avatars does not exist, create it
-      fs.access('./avatars', function (err) {
+    fs.access('./avatars', function (err) {
       if(err) {
         console.log('Creating directory for avatars...');
         fs.mkdir('./avatars');
       }
-      for(var i in body){
+      console.log("Extracting from " + options.url + "...")
+      for(var i in body) {
         request.get(body[i].avatar_url).pipe(fs.createWriteStream('./avatars/' + body[i].login + '.png'));
-        console.log('\tGot avatar from ' + body[i].login)
+        console.log('\tGot avatar from ' + body[i].login);
         }
       });
-      console.log("Done.")
     });
   },
 };
