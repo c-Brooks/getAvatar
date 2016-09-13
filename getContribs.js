@@ -11,22 +11,20 @@ const apiRoot = 'https://api.github.com';
 
 module.exports = {
 
-  getRepoContributors: function(repoOwner, repoName, cb) {
+// If there are no errors in accessing api, return true
+  validate: function(requestOptions) {
+    if( request.get(requestOptions, function (err, response, body) {
+      if(err) { console.log(err); return false; }
+      else { return true; }
+    }) )
+      return true;
+      else return false;
+  },
 
-var requestOptions = {
-    url: apiRoot + '/repos/' + repoOwner+ '/' + repoName + '/contributors',
-    headers: {
-      'User-Agent': 'request',
-      },
-    'auth':{
-      'bearer': auth_token
-      },
-    json: true
-    };
-
-    request.get(requestOptions, function(err, response, body){
-      if(err) { throw err; }
-
+  getRepoContributors: function(options, cb) {
+   var success = request.get(options, function(err, response, body){
+      if(err) { return false; }
+      // If folder named avatars does not exist, create it
       fs.access('./avatars', function (err) {
       if(err) {
         console.log('Creating directory for avatars...');
@@ -34,9 +32,10 @@ var requestOptions = {
       }
       for(var i in body){
         request.get(body[i].avatar_url).pipe(fs.createWriteStream('./avatars/' + body[i].login + '.png'));
-        console.log('Got avatar from ' + body[i].login)
+        console.log('\tGot avatar from ' + body[i].login)
         }
       });
     });
-  }
+  return true;
+  },
 };
