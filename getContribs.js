@@ -1,28 +1,29 @@
 // This file does the heavy lifting
-// Given a repo, it extracts the location of each avatar
-// Then downloads an image from the appropriate url
+// It contains the functions that interact with the web
 
-var auth_token = process.env.AUTH_TOKEN;
 var request = require('request');
 var fs = require('fs');
 var main = require('./main')
 const apiRoot = 'https://api.github.com';
 
-
-module.exports = {
-
+module.exports =
+{
 // If there are no errors in accessing api, return true
-  validate: function(requestOptions) {
-    if( request.get(requestOptions, function (err, response, body) {
-      if(err) { console.log(err); return false; }
-      else { return true; }
-    }) )
-      return true;
-      else return false;
+
+  validate: function(requestOptions){
+    request.get(requestOptions, function (err, response, body) {
+      if(err) {  console.log(err); return false; }
+
+      if(body.message == 'Not Found'){
+        console.log("ERROR: Could not find repo on GitHub\
+        \nPlease double-check your repository's details."); process.exit(1);
+      }
+    });
   },
 
-  getRepoContributors: function(options, cb) {
-   var success = request.get(options, function(err, response, body){
+  getContributorsAvatars: function(options, cb) {
+   console.log("Extracting from " + options.url)
+   request.get(options, function(err, response, body){
       if(err) { return false; }
       // If folder named avatars does not exist, create it
       fs.access('./avatars', function (err) {
@@ -35,7 +36,7 @@ module.exports = {
         console.log('\tGot avatar from ' + body[i].login)
         }
       });
+      console.log("Done.")
     });
-  return true;
   },
 };
