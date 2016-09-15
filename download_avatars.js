@@ -33,6 +33,9 @@ getContribs.validate(requestOptions);
 // Callback function used for printing asynchronously
 getContribs.getContributorsAvatars(requestOptions, function (str) { console.log(str) });
 
+//console.log("Recommended Repos: ")
+//console.log(getContribs.recommendRepos(requestOptions, findMax, outputTextFile));
+
 // ------------------------ FUNCTIONS ------------------------ //
 
 function getAuthToken () {
@@ -51,7 +54,7 @@ function getRequestOptions(auth_token) {
   // If fields are missing, quit the program
   if(!process.argv[2] || !process.argv[3]){
     console.log("ERROR: Incorrect arguments.  This program expects:\
-            \n\tnode main.js REPO_OWNER REPO_NAME");
+            \n\tnode download_avatars.js REPO_OWNER REPO_NAME");
     process.exit(0);
   } else {
     userName = process.argv[2];
@@ -67,4 +70,38 @@ function getRequestOptions(auth_token) {
       },
     json: true
   };
+}
+
+
+function outputTextFile() {
+  var string;
+
+  rs = fs.readFile('./text/text.js', (err, data) => {
+  if (err) { throw err; }
+  console.log(data);
+  string += data;
+});
+  console.log(string);
+  string.split(',');
+  for(var i = 0; i < string.length; i += 2) {
+    console.log('[ ${string[i]} stars ] ${string[i+1}')
+  }
+}
+
+function findMax (arr, numMaxVals){
+  var m = arr.reduce(function(a,b){
+    a[b] = ++a[b] || 1;
+  return a;
+  }, {});//, {});
+
+  var arr = [];
+  for (var key in m) {
+    arr.push([key, m[key]]);
+  }
+  // sort array by values:
+  arr.sort(function(a, b) {
+    return a[1] - b[1];
+  });
+  // slice and map over 5 highest and return value:
+  return arr.slice(-numMaxVals);
 }
