@@ -1,0 +1,25 @@
+{
+  "name": "get-avatar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "download_avatars.js",
+  "dependencies": {
+    "dotenv": "^2.0.0",
+    "request": "^2.75.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node download_avatars.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/c-Brooks/getAvatar.git"
+  },
+  "author": "Corey Brooks",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/c-Brooks/getAvatar/issues"
+  },
+  "homepage": "https://github.com/c-Brooks/getAvatar#readme"
+}

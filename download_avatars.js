@@ -33,9 +33,6 @@ getContribs.validate(requestOptions);
 // Callback function used for printing asynchronously
 getContribs.getContributorsAvatars(requestOptions, function (str) { console.log(str) });
 
-//console.log("Recommended Repos: ")
-//console.log(getContribs.recommendRepos(requestOptions, findMax, outputTextFile));
-
 // ------------------------ FUNCTIONS ------------------------ //
 
 function getAuthToken () {
@@ -84,15 +81,15 @@ function outputTextFile() {
   console.log(string);
   string.split(',');
   for(var i = 0; i < string.length; i += 2) {
-    console.log('[ ${string[i]} stars ] ${string[i+1}')
+    console.log(`[ ${string[i]} stars ] ${string[i+1}`)
   }
 }
-
+// Find the top numMaxVals elements from an array
 function findMax (arr, numMaxVals){
   var m = arr.reduce(function(a,b){
     a[b] = ++a[b] || 1;
   return a;
-  }, {});//, {});
+  });
 
   var arr = [];
   for (var key in m) {
@@ -102,6 +99,6 @@ function findMax (arr, numMaxVals){
   arr.sort(function(a, b) {
     return a[1] - b[1];
   });
-  // slice and map over 5 highest and return value:
+  // Get the number of elements specified
   return arr.slice(-numMaxVals);
 }
